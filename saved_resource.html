@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://fiddle.jshell.net/aybalasubramanian/nmzt5/show/light/ -->
+<html><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Twitter Bootstrap Modal Controller - jsFiddle demo by aybalasubramanian</title>
+  
+  <script type="text/javascript" src="jquery-1.9.1.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="normalize(1).css">
+  
+  
+  <link rel="stylesheet" type="text/css" href="result-light.css">
+  
+    
+      <script type="text/javascript" src="bootstrap.min.js"></script>
+    
+  
+    
+      <link rel="stylesheet" type="text/css" href="bootstrap-combined.min.css">
+    
+  
+  <style type="text/css">
+    
+  </style>
+  
+
+
+<script type="text/javascript">//<![CDATA[ 
+$(window).load(function(){
+$(function () {
+/**
+ * Twitter Bootstrap Modal
+ */
+var Modal = (function ($) {
+	var modal = $('#modal'), ele = {};
+	// function checking
+	if (!$.isFunction($.fn.modal)) {
+		console.log('Twitter Bootstrap Modal is not loaded.');
+		return false;
+	}
+	// initialize elements
+	if (modal.length) {
+		ele = {
+			header: modal.find('#ModalLabel'),
+			body: modal.find('div.modal-body:first'),
+			submit: modal.find('[data-modal-action=submit]'),
+			cancel: modal.find('[data-modal-action=cancel]')
+		};
+		ele.header.text('');
+		ele.body.text('');
+		ele.submit.show();
+	}
+	return {
+		/**
+		 * Show modal
+		 * @param $option {object}:
+		 *   message {string} Modal Context
+		 *   header {string} Modal header
+		 *   submit {object} (optional)
+		 *      text {string} Button text
+		 *      click {function} Button click function
+		 *   cancel {object} (optional)
+		 *      text {string} Button text
+		 *      click {function} Button click function
+		 */
+		show: function (option) {
+			// firing(reattach) events
+			ele.submit.off('click').on('click', function () {
+                // If you need submit the form
+				//$(':button,:submit').prop('disabled', true);
+			});
+			//ele.cancel.off('click');
+
+			// default setting
+			var def = {
+				message: 'Default Message',
+				header: 'Default Header',
+				submit: {},
+				cancel: {
+					text: 'Close'
+				},
+				keyboard: false,
+				backgrop: 'static'
+			};
+			// combine arguments
+			var args = $.extend(def, option);
+console.log(args);
+			// Twitter Bootstrap Modal option
+			var opt = {
+				keyboard: args.keyboard,
+				backdrop: args.backdrop
+			};
+
+			// message must be string and filled
+			if (args.message && 'string' === typeof args.message) {
+
+				// message append
+				ele.body.html(args.message);
+
+				// header must be string
+				if (args.header && 'string' === typeof args.header) {
+					ele.header.text(args.header);
+				}
+				// hiring submit event
+				if (args.submit.click && 'function' === typeof args.submit.click) {
+					ele.submit.show();
+					ele.submit.on('click', args.submit.click);
+					// submit text
+					if (args.submit.text && 'string' === typeof args.submit.text) {
+						ele.submit.text(args.submit.text);
+					}
+				} else {
+					ele.submit.hide();
+				}
+				// hiring cancel event
+				if (args.cancel.click && 'function' === typeof args.cancel.click) {
+					ele.cancel.on('click', args.cancel.click);
+				}
+				// cancel text
+				if (args.cancel.text && 'string' === typeof args.cancel.text) {
+					ele.cancel.text(args.cancel.text);
+				}
+				modal.modal(opt);
+			}
+			return false;
+		},
+		/**
+		 * Close modal
+		 */
+		close: function () {
+			modal.modal('hide');
+		}
+	};
+}(jQuery));
+
+    (function () {
+        $('body').on('click', ':button', function () {
+            var ele = {
+                message: $('#message').val(),
+                header: $('#header').val(),
+                submit: {},
+                cancel: {}
+            };
+            if ($('#submit-text').val()) {
+                ele.submit.text = $('#submit-text').val();
+                if ($('#submit-func').val()) {
+                    ele.submit.click = function () {
+                        eval($('#submit-func').val());
+                    };
+                }
+            }
+            if ($('#cancel-text').val()) {
+                ele.cancel.text = $('#cancel-text').val();
+                if ($('#cancel-func').val()) {
+                    ele.cancel.click = function () {
+                        eval($('#cancel-func').val());
+                    };
+                }
+            }
+            Modal.show(ele);
+        });
+    }());
+});
+});//]]>  
+
+</script>
+
+
+<style type="text/css"></style></head>
+<body>
+  <p>
+    <input type="text" id="message" class="span2" placeholder="Message" value="Message">
+    <input type="text" id="header" class="span2" placeholder="Header" value="Header"><br>
+    <input type="text" id="submit-text" class="span2" placeholder="Submit button text" value="alert"><br>
+    <textarea id="submit-func" cols="50" rows="5" placeholder="Sumit function">alert('Hello, world!');</textarea><br>
+    <input type="text" id="cancel-text" class="span2" placeholder="Cacen button text"><br>
+    <textarea id="cancel-func" cols="50" rows="5" placeholder="Cancel function"></textarea><br>
+    <button class="btn">Call Modal</button>
+</p>
+
+<div id="modal" class="modal hide fade" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="ModalLabel"></h3>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true" data-modal-action="cancel">No</button>
+      <button class="btn btn-primary" data-modal-action="submit">Yes</button>
+    </div>
+  </div><!--//end modal.-->
+  
+
+
+
+
+
+</body></html>
